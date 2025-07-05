@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sushmoy's Flashcard App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #fdfbfb, #ebedee);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #2c3e50;
+    }
+
+    #author {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    .card {
+      width: 300px;
+      height: 180px;
+      perspective: 1000px;
+      margin-bottom: 20px;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.6s;
+      cursor: pointer;
+    }
+
+    .card.flip .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-front {
+      background: #3498db;
+      color: white;
+    }
+
+    .card-back {
+      background: #2ecc71;
+      color: white;
+      transform: rotateY(180deg);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    .controls button {
+      padding: 10px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #34495e;
+      color: white;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <h1>📚 Flashcard App</h1>
+  <div id="author">Built by Sushmoy</div>
+
+  <div class="card" id="card">
+    <div class="card-inner">
+      <div class="card-front" id="front">Question</div>
+      <div class="card-back" id="back">Answer</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="prev">⬅ Prev</button>
+    <button id="next">Next ➡</button>
+  </div>
+
+  <script>
+    const cards = [
+      { question: 'What is HTML?', answer: 'HyperText Markup Language' },
+      { question: 'What is CSS?', answer: 'Cascading Style Sheets' },
+      { question: 'What is JavaScript?', answer: 'A scripting language for the Web' },
+      { question: 'What does DOM stand for?', answer: 'Document Object Model' }
+    ];
+
+    let currentIndex = 0;
+    const card = document.getElementById('card');
+    const front = document.getElementById('front');
+    const back = document.getElementById('back');
+
+    function updateCard() {
+      front.textContent = cards[currentIndex].question;
+      back.textContent = cards[currentIndex].answer;
+    }
+
+    updateCard();
+
+    document.getElementById('next').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % cards.length;
+      updateCard();
+    });
+
+    document.getElementById('prev').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      updateCard();
+    });
+
+    card.addEventListener('click', () => {
+      card.classList.toggle('flip');
+    });
+  </script>
+</body>
+</html>
